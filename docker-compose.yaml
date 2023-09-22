@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  aaa:
+    build:
+      context: ""
+    image: aaa:latest
+    container_name: aaa
+    command: ["/bin/bash"]
+    tty: true
+    volumes:
+      - ./shared:/shared
+      - testvol1:/testvol1
+    depends_on:
+      - fluent-bit
+
+  fluent-bit:
+    image: fluent/fluent-bit
+    volumes:
+      - ./config/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./config/parsers.conf:/fluent-bit/etc/parsers.conf
+      - ./shared:/shared
+      - testvol1:/testvol1
+
+volumes:
+  testvol1:
